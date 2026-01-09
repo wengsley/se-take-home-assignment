@@ -23,5 +23,11 @@ Authentication - JWT (JSON Web Token)
 ORM - Prisma
 
 
-
+The backend must be a CLI application that can be executed in GitHub Actions
+Must implement the following scripts in the script directory:
+test.sh: Contains unit test execution steps
+build.sh: Contains compilation steps for the CLI application
+run.sh: Contains execution steps that run the CLI application
+The CLI application result must be printed to result.txt
+The result.txt output must include timestamps in HH:MM:SS format to track order completion times
 

@@ -3,16 +3,18 @@
 # Build Script
 # This script should contain all compilation steps for your CLI application
 
+set -e  # Exit on error
+
 echo "Building application..."
 
 cd feedme-backend
 
-# Install dependencies using yarn
+# Install dependencies
 if command -v yarn &> /dev/null; then
-    yarn install
+    yarn install --frozen-lockfile
 else
     echo "Yarn not found, using npm instead..."
-    npm install
+    npm ci
 fi
 
 # Compile TypeScript
@@ -22,4 +24,10 @@ else
     npm run build
 fi
 
-echo "Build completed"
+# Verify build output
+if [ ! -f "dist/cli.js" ]; then
+    echo "Error: CLI build failed - dist/cli.js not found"
+    exit 1
+fi
+
+echo "Build completed successfully"

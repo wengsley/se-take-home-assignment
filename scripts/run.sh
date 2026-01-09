@@ -3,15 +3,23 @@
 # Run Script
 # This script should execute your CLI application and output results to result.txt
 
+set -e  # Exit on error
+
 echo "Running CLI application..."
 
 cd feedme-backend
 
-# Run CLI simulation mode - filter out yarn/npm/tsx noise
-if command -v yarn &> /dev/null; then
-    yarn tsx src/cli.ts 2>&1 | grep -vE "(yarn run|Done in|warning|^\$|^yarn|tsx|node_modules)" > ../scripts/result.txt || true
-else
-    npx tsx src/cli.ts 2>&1 | grep -vE "(npm|Done in|warning|^\$|tsx|node_modules)" > ../scripts/result.txt || true
+# Ensure the project is built
+if [ ! -d "dist" ] || [ ! -f "dist/cli.js" ]; then
+    echo "Building application first..."
+    if command -v yarn &> /dev/null; then
+        yarn build
+    else
+        npm run build
+    fi
 fi
+
+# Run the compiled CLI application
+node dist/cli.js > ../scripts/result.txt 2>&1
 
 echo "CLI application execution completed"
