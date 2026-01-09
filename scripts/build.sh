@@ -3,13 +3,23 @@
 # Build Script
 # This script should contain all compilation steps for your CLI application
 
-echo "Building CLI application..."
+echo "Building application..."
 
-# For Go projects:
-# go build -o order-controller ./cmd/main.go
+cd feedme-backend
 
-# For Node.js projects:
-# npm install
-# npm run build (if needed)
+# Install dependencies using yarn
+if command -v yarn &> /dev/null; then
+    yarn install
+else
+    echo "Yarn not found, using npm instead..."
+    npm install
+fi
+
+# Compile TypeScript
+if command -v yarn &> /dev/null; then
+    yarn build
+else
+    npm run build
+fi
 
 echo "Build completed"

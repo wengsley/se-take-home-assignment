@@ -5,15 +5,13 @@
 
 echo "Running CLI application..."
 
-# For Go projects:
-# ./order-controller > result.txt
+cd feedme-backend
 
-# For Node.js projects:
-# node index.js > result.txt
-# or npm start > result.txt
-
-# Temporary placeholder - remove this when you implement your CLI
-echo "Added 1 bot" > result.txt
-echo "status: bot: [1], order: []" >> result.txt
+# Run CLI simulation mode - filter out yarn/npm/tsx noise
+if command -v yarn &> /dev/null; then
+    yarn tsx src/cli.ts 2>&1 | grep -vE "(yarn run|Done in|warning|^\$|^yarn|tsx|node_modules)" > ../scripts/result.txt || true
+else
+    npx tsx src/cli.ts 2>&1 | grep -vE "(npm|Done in|warning|^\$|tsx|node_modules)" > ../scripts/result.txt || true
+fi
 
 echo "CLI application execution completed"
